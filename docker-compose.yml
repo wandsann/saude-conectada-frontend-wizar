@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: always
+
+  bot1:
+    build: ./bot1
+    env_file:
+      - ./bot1/.env
+    depends_on:
+      - redis
+    restart: always
+    volumes:
+      - ./bot1:/app
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+
+  bot2:
+    build: ./bot2
+    env_file:
+      - ./bot2/.env
+    depends_on:
+      - redis
+    restart: always
+    volumes:
+      - ./bot2:/app
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+
+  bot3:
+    build: ./bot3
+    env_file:
+      - ./bot3/.env
+    depends_on:
+      - redis
+    restart: always
+    volumes:
+      - ./bot3:/app
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+
+volumes:
+  redis_data:
+
+networks:
+  bot-network:
+    driver: bridge 

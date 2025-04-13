@@ -1,3 +1,6 @@
 node_modules/
 dist/
 .env
+react
+framer-motion
+react-router-dom

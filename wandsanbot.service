@@ -1,0 +1,15 @@
+[Unit]
+Description=WandsanBot Telegram Service
+After=network.target redis.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/wandsanbot
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/usr/bin/python3 bot.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
