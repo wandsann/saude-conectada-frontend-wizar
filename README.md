@@ -1,75 +1,99 @@
-# Welcome to your Lovable project
+# Saúde Conectada Frontend
 
-## Project info
+Sistema de agendamento e gestão de consultas médicas desenvolvido com React, Vite e Supabase.
 
-**URL**: https://lovable.dev/projects/b3a36aaa-86d1-4268-a1c9-9d093fb7d578
+## 🚀 Tecnologias
 
-## How can I edit this code?
+- [React](https://reactjs.org/)
+- [Vite](https://vitejs.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [shadcn/ui](https://ui.shadcn.com/)
+- [Supabase](https://supabase.com/)
 
-There are several ways of editing your application.
+## 📋 Pré-requisitos
 
-**Use Lovable**
+- Node.js 18+
+- npm ou yarn
+- Conta no Supabase
+- Conta no Twilio (opcional - para notificações SMS)
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/b3a36aaa-86d1-4268-a1c9-9d093fb7d578) and start prompting.
+## 🔧 Instalação
 
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+1. Clone o repositório:
+```bash
+git clone https://github.com/seu-usuario/saude-conectada-frontend.git
+cd saude-conectada-frontend
 ```
 
-**Edit a file directly in GitHub**
+2. Instale as dependências:
+```bash
+npm install
+# ou
+yarn install
+```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+3. Configure as variáveis de ambiente:
+```bash
+cp .env.example .env
+```
+Edite o arquivo `.env` com suas configurações.
 
-**Use GitHub Codespaces**
+4. Inicie o servidor de desenvolvimento:
+```bash
+npm run dev
+# ou
+yarn dev
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+O aplicativo estará disponível em `http://localhost:5173`
 
-## What technologies are used for this project?
+## 🏗️ Estrutura do Projeto
 
-This project is built with:
+```
+src/
+  ├── components/       # Componentes reutilizáveis
+  ├── pages/           # Páginas da aplicação
+  ├── hooks/           # Custom hooks
+  ├── lib/             # Utilitários e configurações
+  ├── services/        # Serviços de API
+  ├── styles/          # Estilos globais
+  └── types/           # Definições de tipos TypeScript
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 📦 Scripts Disponíveis
 
-## How can I deploy this project?
+- `npm run dev` - Inicia o servidor de desenvolvimento
+- `npm run build` - Gera build de produção
+- `npm run preview` - Visualiza build de produção localmente
+- `npm run lint` - Executa verificação de lint
+- `npm run test` - Executa testes
 
-Simply open [Lovable](https://lovable.dev/projects/b3a36aaa-86d1-4268-a1c9-9d093fb7d578) and click on Share -> Publish.
+## 🔐 Variáveis de Ambiente
 
-## Can I connect a custom domain to my Lovable project?
+Veja `.env.example` para lista completa de variáveis necessárias.
 
-Yes, you can!
+## 📱 Funcionalidades
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+- Autenticação de usuários (pacientes e profissionais de saúde)
+- Agendamento de consultas
+- Gestão de perfil
+- Notificações por SMS/email (opcional)
+- Videochamadas (opcional)
+- Dashboard administrativo
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
-# saude-conectada-frontend-wizar
-# saude-conectada-frontend-wizar
+## 🤝 Contribuindo
+
+1. Faça um fork do projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
+5. Abra um Pull Request
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+## 📞 Suporte
+
+Para suporte, envie um email para suporte@saudeconectada.com.br ou abra uma issue no GitHub.

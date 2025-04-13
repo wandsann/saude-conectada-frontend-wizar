@@ -1,105 +1,98 @@
-
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
+import { cn } from '@/lib/utils';
 
-interface MaskedInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  mask?: 'cpf' | 'phone' | 'none';
-  formatter?: (value: string) => string;
+interface MaskedInputProps {
+  mask: 'cpf' | 'phone';
+  value?: string;
+  onValueChange: (value: string, isValid: boolean) => void;
   validator?: (value: string) => boolean;
-  onValueChange?: (value: string, isValid: boolean) => void;
   errorMessage?: string;
+  placeholder?: string;
+  className?: string;
+  'aria-label'?: string;
+  'aria-describedby'?: string;
+  'aria-invalid'?: boolean;
 }
 
 export default function MaskedInput({
-  mask = 'none',
-  formatter,
-  validator,
+  mask,
+  value: externalValue,
   onValueChange,
+  validator,
   errorMessage,
+  placeholder,
+  className,
+  'aria-label': ariaLabel,
+  'aria-describedby': ariaDescribedBy,
+  'aria-invalid': ariaInvalid,
   ...props
 }: MaskedInputProps) {
-  const [value, setValue] = useState<string>('');
-  const [isValid, setIsValid] = useState<boolean>(true);
-  const [isFocused, setIsFocused] = useState<boolean>(false);
-  const [hasBlurred, setHasBlurred] = useState<boolean>(false);
+  const [value, setValue] = useState('');
+  const [error, setError] = useState('');
 
-  // Default formatters
-  const formatCPF = (input: string) => {
-    const digits = input.replace(/\D/g, '');
-    if (digits.length <= 3) return digits;
-    if (digits.length <= 6) return `${digits.slice(0, 3)}.${digits.slice(3)}`;
-    if (digits.length <= 9) return `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6)}`;
-    return `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6, 9)}-${digits.slice(9, 11)}`;
-  };
+  useEffect(() => {
+    if (externalValue !== undefined) {
+      setValue(externalValue);
+    }
+  }, [externalValue]);
 
-  const formatPhone = (input: string) => {
-    const digits = input.replace(/\D/g, '');
-    if (digits.length <= 2) return digits;
-    if (digits.length <= 6) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
-    if (digits.length <= 10) return `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
-    return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
-  };
+  const applyMask = (text: string): string => {
+    const digits = text.replace(/\D/g, '');
 
-  const getFormatter = () => {
-    if (formatter) return formatter;
-    if (mask === 'cpf') return formatCPF;
-    if (mask === 'phone') return formatPhone;
-    return (val: string) => val;
-  };
+    switch (mask) {
+      case 'cpf':
+        if (digits.length <= 3) return digits;
+        if (digits.length <= 6) return `${digits.slice(0, 3)}.${digits.slice(3)}`;
+        if (digits.length <= 9) return `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6)}`;
+        return `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6, 9)}-${digits.slice(9, 11)}`;
 
-  // Default validators
-  const validateCPF = (input: string) => {
-    const digits = input.replace(/\D/g, '');
-    return digits.length === 11;
-  };
+      case 'phone':
+        if (digits.length <= 2) return digits;
+        if (digits.length <= 7) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+        return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7, 11)}`;
 
-  const validatePhone = (input: string) => {
-    const digits = input.replace(/\D/g, '');
-    return digits.length >= 10 && digits.length <= 11;
-  };
-
-  const getValidator = () => {
-    if (validator) return validator;
-    if (mask === 'cpf') return validateCPF;
-    if (mask === 'phone') return validatePhone;
-    return () => true;
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const rawValue = e.target.value;
-    const formattedValue = getFormatter()(rawValue);
-    const isValueValid = getValidator()(formattedValue);
-    
-    setValue(formattedValue);
-    setIsValid(isValueValid);
-
-    if (onValueChange) {
-      onValueChange(formattedValue, isValueValid);
+      default:
+        return text;
     }
   };
 
-  const handleFocus = () => {
-    setIsFocused(true);
-  };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = applyMask(e.target.value);
+    setValue(newValue);
 
-  const handleBlur = () => {
-    setIsFocused(false);
-    setHasBlurred(true);
+    if (validator) {
+      const isValid = validator(newValue);
+      setError(isValid ? '' : errorMessage || 'Valor inválido');
+      onValueChange(newValue, isValid);
+    } else {
+      onValueChange(newValue, true);
+    }
   };
 
   return (
-    <div className="space-y-2">
-      <Input 
-        {...props} 
-        value={value} 
-        onChange={handleChange} 
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        className={`${!isValid && hasBlurred ? 'border-red-500 focus:ring-red-200' : ''}`}
+    <div className="relative">
+      <Input
+        type="text"
+        value={value}
+        onChange={handleChange}
+        placeholder={placeholder}
+        className={cn(
+          error ? 'border-red-500 focus-visible:ring-red-500' : '',
+          className
+        )}
+        aria-label={ariaLabel}
+        aria-describedby={ariaDescribedBy}
+        aria-invalid={ariaInvalid || !!error}
+        {...props}
       />
-      {!isValid && hasBlurred && errorMessage && (
-        <p className="text-red-500 text-sm" id={props.id ? `${props.id}-error` : undefined}>
-          {errorMessage}
+      {error && (
+        <p
+          className="text-red-500 text-sm mt-1"
+          id={ariaDescribedBy}
+          role="alert"
+        >
+          {error}
         </p>
       )}
     </div>

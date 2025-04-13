@@ -1,70 +1,76 @@
-
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuTrigger 
-} from "@/components/ui/dropdown-menu";
-import { Languages } from "lucide-react";
+import { useState, useEffect } from 'react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Globe } from 'lucide-react';
 
 interface Language {
   code: string;
   name: string;
   flag: string;
+  label: string;
 }
 
-const availableLanguages: Language[] = [
-  { code: 'pt', name: 'Português', flag: '🇧🇷' },
-  { code: 'en', name: 'English', flag: '🇺🇸' },
-  { code: 'es', name: 'Español', flag: '🇪🇸' },
-  { code: 'libras', name: 'Libras', flag: '👐' }
+const languages: Language[] = [
+  { code: 'pt-BR', name: 'Português', flag: '🇧🇷', label: 'Português (Brasil)' },
+  { code: 'en-US', name: 'English', flag: '🇺🇸', label: 'English (United States)' },
+  { code: 'es-ES', name: 'Español', flag: '🇪🇸', label: 'Español (España)' },
+  { code: 'libras', name: 'Libras', flag: '🤟', label: 'Língua Brasileira de Sinais' },
 ];
 
 export default function LanguageSelector() {
-  const [currentLanguage, setCurrentLanguage] = useState<Language>(availableLanguages[0]);
+  const [language, setLanguage] = useState(() => {
+    const saved = localStorage.getItem('preferredLanguage');
+    return saved || 'pt-BR';
+  });
 
-  const handleLanguageChange = (language: Language) => {
-    setCurrentLanguage(language);
-    // In a real app, we would use i18n to change the language
-    console.log(`Language changed to ${language.name}`);
-    
-    // Mock implementation of i18next changeLanguage
-    // This would normally update all translated text on the page
-    setTimeout(() => {
-      console.log(`Language updated to ${language.name} in less than 1s`);
-    }, 500);
+  useEffect(() => {
+    localStorage.setItem('preferredLanguage', language);
+    document.documentElement.lang = language;
+  }, [language]);
+
+  const handleLanguageChange = (value: string) => {
+    setLanguage(value);
+    // TODO: Implementar mudança de idioma usando i18n
   };
 
+  const selectedLanguage = languages.find(lang => lang.code === language);
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          className="h-10 w-10 rounded-full"
-          aria-label={`Mudar idioma. Idioma atual: ${currentLanguage.name}`}
-        >
-          <span className="sr-only">Mudar idioma</span>
-          <span className="flex items-center gap-2">
-            <span className="text-lg" aria-hidden="true">{currentLanguage.flag}</span>
-            <Languages className="h-4 w-4" aria-hidden="true" />
-          </span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="bg-white shadow-lg">
-        {availableLanguages.map((language) => (
-          <DropdownMenuItem 
-            key={language.code}
-            onClick={() => handleLanguageChange(language)}
-            className="flex items-center gap-2 cursor-pointer"
+    <Select 
+      value={language} 
+      onValueChange={handleLanguageChange}
+      aria-label="Selecionar idioma"
+    >
+      <SelectTrigger
+        className="w-[150px] h-10 bg-white/90 backdrop-blur-sm"
+        aria-label={`Idioma atual: ${selectedLanguage?.label}`}
+      >
+        <SelectValue aria-label={selectedLanguage?.label}>
+          <div className="flex items-center gap-2">
+            <Globe className="h-4 w-4" aria-hidden="true" />
+            <span role="img" aria-label={selectedLanguage?.name}>{selectedLanguage?.flag}</span>
+            <span className="hidden md:inline">{selectedLanguage?.name}</span>
+          </div>
+        </SelectValue>
+      </SelectTrigger>
+      <SelectContent>
+        {languages.map(lang => (
+          <SelectItem
+            key={lang.code}
+            value={lang.code}
+            className="flex items-center gap-2"
+            aria-label={lang.label}
           >
-            <span className="text-lg" aria-hidden="true">{language.flag}</span>
-            <span>{language.name}</span>
-          </DropdownMenuItem>
+            <span role="img" aria-label={lang.name}>{lang.flag}</span>
+            <span>{lang.name}</span>
+          </SelectItem>
         ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
+      </SelectContent>
+    </Select>
   );
 }
