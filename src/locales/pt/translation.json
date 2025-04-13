@@ -1,0 +1,19 @@
+{
+  "welcome": "Bem-vindo ao Saúde Conectada",
+  "login": "Entrar",
+  "logout": "Sair",
+  "patients": "Pacientes",
+  "appointments": "Consultas",
+  "profile": "Perfil",
+  "email": "Email",
+  "password": "Senha",
+  "username": "Nome de Usuário",
+  "cpf": "CPF",
+  "register": "Cadastrar",
+  "recoverPassword": "Recuperar Senha",
+  "newPassword": "Nova Senha",
+  "resetPassword": "Redefinir Senha",
+  "createAppointment": "Criar Consulta",
+  "date": "Data",
+  "description": "Descrição"
+}

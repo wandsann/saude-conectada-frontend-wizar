@@ -1,0 +1,19 @@
+{
+  "welcome": "Bienvenido a Saúde Conectada",
+  "login": "Iniciar Sesión",
+  "logout": "Cerrar Sesión",
+  "patients": "Pacientes",
+  "appointments": "Citas",
+  "profile": "Perfil",
+  "email": "Correo Electrónico",
+  "password": "Contraseña",
+  "username": "Nombre de Usuario",
+  "cpf": "CPF",
+  "register": "Registrarse",
+  "recoverPassword": "Recuperar Contraseña",
+  "newPassword": "Nueva Contraseña",
+  "resetPassword": "Restablecer Contraseña",
+  "createAppointment": "Crear Cita",
+  "date": "Fecha",
+  "description": "Descripción"
+}

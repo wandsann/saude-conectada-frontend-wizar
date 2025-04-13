@@ -4,6 +4,9 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import RecoverPassword from "./pages/RecoverPassword";
 import Register from "./pages/Register";
+import Appointments from "./pages/Appointments";
+import Profile from "./pages/Profile";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   return (
@@ -14,8 +17,9 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/recuperar-senha" element={<RecoverPassword />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/appointments" element={<div>Consultas (Em Breve)</div>} />
-          <Route path="/profile" element={<div>Perfil (Em Breve)</div>} />
+          <Route path="/appointments" element={<Appointments />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
         </Routes>
       </Router>
     </AuthProvider>
